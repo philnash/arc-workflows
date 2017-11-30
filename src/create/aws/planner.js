@@ -30,6 +30,14 @@ module.exports = function planner(arc) {
     })
   }
 
+  // build up a plan for xml
+  if (arc.xml) {
+    arc.xml.forEach(route => {
+      plans.push({action:'create-xml-lambda-code', route, app})
+      plans.push({action:'create-xml-lambda-deployments', route, app})
+    })
+  }
+
   // html and json are session enabled by default
   // which means: we create a sessions table by default
   // (arc-sessions; can override with SESSIONS_TABLE env var)

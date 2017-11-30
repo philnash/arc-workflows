@@ -2,8 +2,12 @@ var fs = require('fs')
 var path = require('path')
 
 module.exports = function _getResponseTemplates(statusCode, type) {
-  var isHTML = type === 'html'
-  return isHTML? _getHTML(statusCode) : _getJSON(statusCode)
+  var templates = {
+    'html': _getHTML,
+    'json': _getJSON,
+    'xml': _getXML
+  }
+  return templates[type](statusCode);
 }
 
 /* usage! loooool
@@ -35,5 +39,18 @@ function _getJSON(statusCode) {
   if (statusCode === '500') out = vtl
   return {
     'application/json': out
+  }
+}
+
+function _getXML(statusCode) {
+  var vtl = fs.readFileSync(path.join(__dirname, '_errors-xml.vtl')).toString()
+  var out = ''
+  if (statusCode === '200') out = "$input.json('$.xml')"
+  if (statusCode === '302') out = "$input.path('$.errorMessage')"
+  if (statusCode === '403') out = vtl
+  if (statusCode === '404') out = vtl
+  if (statusCode === '500') out = vtl
+  return {
+    'application/xml': out
   }
 }
