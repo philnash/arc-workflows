@@ -29,7 +29,7 @@ module.exports = function _createCode(params, callback) {
 
     var lambda = `src/${params.space}/${params.idx}`
     var pathToPkg = path.join(localPath, 'package.json')
-    var filename = params.space === 'html' || params.space === 'json'? `${params.idx.split('-')[0]}.js` : 'index.js'
+    var filename = ['html', 'json', 'xml'].includes(params.space) ? `${params.idx.split('-')[0]}.js` : 'index.js'
     var index = path.join(__dirname, '..', 'templates', `${params.space}-lambda`, filename)
     var pkg = JSON.stringify({name:`${params.app}-${params.idx}`}, null, 2)
 

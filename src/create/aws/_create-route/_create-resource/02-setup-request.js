@@ -79,6 +79,7 @@ module.exports = function _02setupRequest(params, callback) {
               'application/x-www-form-urlencoded': vtlForm,
               'multipart/form-data': vtl,
               'application/json': vtl,
+              'application/xml': vtl
             }
           },
           function(err,result) {
